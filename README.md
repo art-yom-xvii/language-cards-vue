@@ -37,7 +37,31 @@ A simple, elegant single-page flashcard application built with Vue 3 (Compositio
 
 ### Customization
 
--   To add or change words, edit the `words` array in `src/Flashcard.vue`.
+-   To add or change words, edit the `words` array in `src/words.js`.
 -   Stats are saved in your browser's localStorage. To reset, clear site data in your browser.
+
+## Deployment to GitHub Pages
+
+This project includes a GitHub Actions workflow for automatic deployment to GitHub Pages.
+
+### Setup Instructions:
+
+1. **Push your code to GitHub** (if you haven't already)
+2. **Enable GitHub Pages** in your repository:
+    - Go to your repository → Settings → Pages
+    - Set "Source" to "GitHub Actions"
+3. **Push to main/master branch** - the workflow will automatically:
+    - Build your Vue app
+    - Deploy it to GitHub Pages
+    - Make it available at `https://yourusername.github.io/007-language-cards/`
+
+### Manual Deployment:
+
+If you prefer to deploy manually:
+
+```sh
+npm run build
+# Upload the contents of the 'dist' folder to your GitHub Pages branch
+```
 
 ---
