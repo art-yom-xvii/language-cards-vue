@@ -53,7 +53,7 @@ This project includes a GitHub Actions workflow for automatic deployment to GitH
 3. **Push to main/master branch** - the workflow will automatically:
     - Build your Vue app
     - Deploy it to GitHub Pages
-    - Make it available at `https://yourusername.github.io/007-language-cards/`
+    - Make it available at `https://yourusername.github.io/language-cards-vue/`
 
 ### Manual Deployment:
 

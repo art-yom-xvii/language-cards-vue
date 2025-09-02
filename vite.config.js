@@ -7,7 +7,7 @@ import vueDevTools from "vite-plugin-vue-devtools";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue(), vueDevTools()],
-  base: process.env.NODE_ENV === "production" ? "/007-language-cards/" : "/",
+  base: process.env.NODE_ENV === "production" ? "/language-cards-vue/" : "/",
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
