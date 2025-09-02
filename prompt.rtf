@@ -1,0 +1,12 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww12000\viewh18940\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 please create a simple but elegant single page application by using vue 3 composition api. this application will be similar to anki card app. there will be a collection of simple latvian words with english tranlation (as a db). the app interface will select a random word from this db and show it on screen. beside will be a "Show Translation" button. Once user click on it, answer (translation) will appear and two new buttons will appear with the ability to mark if the word was guessed correctly or not by user. Whatever is selected, the answer selected then goes to a db, in order to collect statistics for most and least correctly guessed words. After that - new word appears on screen and so on. Use vue components, make it structured and easy to read. For styling use tailwind 3 with a config file which has all needed setup.\
+\
+\
+\
+Create a single-page flashcard application using Vue 3 (Composition API) and TailwindCSS v3. The app should behave like a simplified Anki. Use a local JS array as the database of words, for example: const words = [ \{ lv: "suns", en: "dog" \}, \{ lv: "ka\uc0\u311 is", en: "cat" \}, \{ lv: "maize", en: "bread" \}, \{ lv: "\u363 dens", en: "water" \} ]. On load, randomly select one word from the DB and show the Latvian word. Add a button "Show Translation" which reveals the English translation. After reveal, show two buttons: "Guessed Correctly" and "Guessed Incorrectly". Store the user\'92s selection in a statistics DB (can be a local object or array), then display a new random word. Track statistics by keeping counters for each word (correct, incorrect). Optionally display a Stats section at the bottom showing the most and least guessed words. Use components: App.vue for main layout, Flashcard.vue for handling word logic and reveal, Stats.vue for statistics display. Style with TailwindCSS v3 and provide a tailwind.config.js setup file. Keep the UI simple and elegant (centered card, responsive, minimal colors). Add optional improvements: skip word button, dark mode toggle, prevent immediate repeats, show accuracy percentage, and persist stats in localStorage.}
