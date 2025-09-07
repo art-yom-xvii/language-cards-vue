@@ -87,8 +87,8 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted } from "vue";
-import { words } from "./words.js";
+import { ref, inject, onMounted, computed, watch } from "vue";
+import { categories } from "./words.js";
 
 const $store = inject("store");
 const isReversed = inject("isReversed");
@@ -96,12 +96,19 @@ const revealed = ref(false);
 const lastIndex = ref(-1);
 const currentIndex = ref(-1);
 const currentWord = ref({});
+const filteredWords = computed(() => {
+  const catName = $store.state.selectedCategory || "All";
+  const cat = categories.find((c) => c.name === catName);
+  if (cat) return cat.words;
+  const all = categories.find((c) => c.name === "All");
+  return all ? all.words : categories[0]?.words || [];
+});
 
 function getRandomIndex() {
   let idx;
   do {
-    idx = Math.floor(Math.random() * words.length);
-  } while (words.length > 1 && idx === lastIndex.value);
+    idx = Math.floor(Math.random() * filteredWords.value.length);
+  } while (filteredWords.value.length > 1 && idx === lastIndex.value);
   return idx;
 }
 
@@ -109,7 +116,7 @@ function nextWord() {
   revealed.value = false;
   lastIndex.value = currentIndex.value;
   currentIndex.value = getRandomIndex();
-  currentWord.value = words[currentIndex.value];
+  currentWord.value = filteredWords.value[currentIndex.value] || {};
 }
 
 function reveal() {
@@ -132,6 +139,16 @@ function skipWord() {
 onMounted(() => {
   if (!currentWord.value.lv) nextWord();
 });
+
+watch(
+  () => $store.state.selectedCategory,
+  () => {
+    // Reset selection when category changes
+    lastIndex.value = -1;
+    currentIndex.value = -1;
+    nextWord();
+  }
+);
 </script>
 
 <style scoped>

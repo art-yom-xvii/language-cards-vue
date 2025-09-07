@@ -8,6 +8,7 @@ const store = {
   state: reactive({
     darkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
     stats: {},
+    selectedCategory: "All",
   }),
   commit(action, payload) {
     if (action === "toggleDarkMode") {
@@ -21,6 +22,10 @@ const store = {
     if (action === "setStats") {
       this.state.stats = payload;
     }
+    if (action === "setCategory") {
+      this.state.selectedCategory = payload;
+      localStorage.setItem("selectedCategory", this.state.selectedCategory);
+    }
   },
 };
 
@@ -29,6 +34,8 @@ const savedDark = localStorage.getItem("darkMode");
 if (savedDark !== null) store.state.darkMode = savedDark === "true";
 const savedStats = localStorage.getItem("stats");
 if (savedStats) store.state.stats = JSON.parse(savedStats);
+const savedCategory = localStorage.getItem("selectedCategory");
+if (savedCategory) store.state.selectedCategory = savedCategory;
 
 const app = createApp(App);
 app.provide("store", store);
