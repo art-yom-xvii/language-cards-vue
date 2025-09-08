@@ -92,10 +92,15 @@ import { categories } from "./words.js";
 
 const $store = inject("store");
 const isReversed = inject("isReversed");
+const incorrectMode = inject("incorrectMode");
 const revealed = ref(false);
 const lastIndex = ref(-1);
 const currentIndex = ref(-1);
 const currentWord = ref({});
+
+// For incorrect mode
+const incorrectWords = ref([]);
+
 const filteredWords = computed(() => {
   const catName = $store.state.selectedCategory || "All";
   const cat = categories.find((c) => c.name === catName);
@@ -104,19 +109,29 @@ const filteredWords = computed(() => {
   return all ? all.words : categories[0]?.words || [];
 });
 
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 function getRandomIndex() {
+  let arr = incorrectMode.value ? incorrectWords.value : filteredWords.value;
   let idx;
   do {
-    idx = Math.floor(Math.random() * filteredWords.value.length);
-  } while (filteredWords.value.length > 1 && idx === lastIndex.value);
+    idx = Math.floor(Math.random() * arr.length);
+  } while (arr.length > 1 && idx === lastIndex.value);
   return idx;
 }
 
 function nextWord() {
   revealed.value = false;
   lastIndex.value = currentIndex.value;
+  let arr = incorrectMode.value ? incorrectWords.value : filteredWords.value;
   currentIndex.value = getRandomIndex();
-  currentWord.value = filteredWords.value[currentIndex.value] || {};
+  currentWord.value = arr[currentIndex.value] || {};
 }
 
 function reveal() {
@@ -129,6 +144,17 @@ function guess(correct) {
   if (correct) stats.correct++;
   else stats.incorrect++;
   $store.commit("updateStats", { [key]: stats });
+  if (incorrectMode.value) {
+    if (correct) {
+      // Remove word from incorrectWords
+      incorrectWords.value = incorrectWords.value.filter((w) => w.lv !== key);
+    }
+    // If all words are correct, reset
+    if (incorrectWords.value.length === 0) {
+      // Optionally show a message or reset
+      incorrectMode.value = false;
+    }
+  }
   nextWord();
 }
 
@@ -137,7 +163,25 @@ function skipWord() {
 }
 
 onMounted(() => {
-  if (!currentWord.value.lv) nextWord();
+  // Always initialize incorrectWords and show a word on mount
+  if (incorrectMode.value) {
+    incorrectWords.value = shuffle([...filteredWords.value]);
+    nextWord();
+  } else {
+    nextWord();
+  }
+  watch(
+    () => incorrectMode.value,
+    (val) => {
+      if (val) {
+        incorrectWords.value = shuffle([...filteredWords.value]);
+        nextWord();
+      } else {
+        incorrectWords.value = [];
+        nextWord();
+      }
+    }
+  );
 });
 
 watch(
@@ -146,6 +190,8 @@ watch(
     // Reset selection when category changes
     lastIndex.value = -1;
     currentIndex.value = -1;
+    incorrectMode.value = true;
+    incorrectWords.value = shuffle([...filteredWords.value]);
     nextWord();
   }
 );
@@ -154,7 +200,8 @@ watch(
 <style scoped>
 .fade-slide-enter-active,
 .fade-slide-leave-active {
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .fade-slide-enter-from {
   opacity: 0;
