@@ -9,7 +9,7 @@
       <div class="flex flex-col items-center flex-1 min-w-[0] w-full">
         <div class="flex items-center mb-2">
           <span class="text-3xl mr-2">{{ isReversed ? "🇬🇧" : "🇱🇻" }}</span>
-          <span class="text-xl font-semibold text-gray-400">{{
+          <span class="hidden sm:inline text-xl font-semibold text-gray-400">{{
             isReversed ? "English" : "Latvian"
           }}</span>
         </div>
@@ -22,7 +22,7 @@
       <div class="flex flex-col items-center flex-1 min-w-[0] w-full">
         <div class="flex items-center mb-2">
           <span class="text-3xl mr-2">{{ isReversed ? "🇱🇻" : "🇬🇧" }}</span>
-          <span class="text-xl font-semibold text-gray-400">{{
+          <span class="hidden sm:inline text-xl font-semibold text-gray-400">{{
             isReversed ? "Latvian" : "English"
           }}</span>
         </div>
